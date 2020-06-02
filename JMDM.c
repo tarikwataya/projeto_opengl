@@ -23,27 +23,18 @@ typedef struct{float enemyX; float enemyY;} FilaB;
 FilaC filac[6];
 FilaB filab[6];
 
-void main(int argc, char** argv){
-    glutInit(&argc, argv);
-    glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE);
-    glutInitWindowSize(500, 500);
-    glutCreateWindow("FASE 02");
-	glutKeyboardFunc(_keys);
-
-    glutDisplayFunc(draw);
-    glutReshapeFunc(resize);
-	
-	if(phase == 1){
-    	rowp1();
-	}else{
-		rowp2();		
+void colision(float Ax, float Ay, float Acom, float Aalt, float Bx, float By, float Bcom, float Balt){
+	if(Ay + Aalt < By){col = 0;}
+	else if(Ay > By + Balt){col = 0;}
+	else if(Ax + Acom < Bx){col = 0;}
+	else if(Ax > Bx + Bcom){col = 0;}
+	else{
+		if(phase == 1){
+			personX = -0.5; persony = -9.5;
+		}else{
+			personX = 8; persony = -9;
+		}
 	}
-	
-    glutIdleFunc(idle);
-    
-    init();
-
-    glutMainLoop();
 }
 
 void rowp1(){
@@ -122,6 +113,29 @@ void rowp2(){
 		filab[5].enemyY = 0;
 }
 
+void main(int argc, char** argv){
+    glutInit(&argc, argv);
+    glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("FASE 02");
+	glutKeyboardFunc(_keys);
+
+    glutDisplayFunc(draw);
+    glutReshapeFunc(resize);
+	
+	if(phase == 1){
+    	rowp1();
+	}else{
+		rowp2();		
+	}
+	
+    glutIdleFunc(idle);
+    
+    init();
+
+    glutMainLoop();
+}
+
 void init(){
     glClearColor(0.0, 0.0, 0.0, 0.0);
 }
@@ -179,18 +193,11 @@ void phase1(){
 	    	glVertex2f(filab[n].enemyX - 1, filab[n].enemyY - 1);
 	    	glVertex2f(filab[n].enemyX - 1, filab[n].enemyY);		
 		glEnd();
-		    	
-		if(filac[n].enemyY + 1 < persony){col = 0;}
-		else if(filac[n].enemyY > persony + personAlt){col = 0;}
-		else if(filac[n].enemyX + 1 < personX){col = 0;}
-		else if(filac[n].enemyX > personX + personComp){col = 0;}
-		else{personX = -0.5; persony = -9.5;}
 		
-		if(filab[n].enemyY + 1 < persony){col = 0;}
-		else if(filab[n].enemyY > persony + personAlt){col = 0;}
-		else if(filab[n].enemyX + 1 < personX){col = 0;}
-		else if(filab[n].enemyX > personX + personComp){col = 0;}
-		else{personX = -0.5; persony = -9.5;}
+		colision(filac[n].enemyX, filac[n].enemyY, 1, 1, personX, persony, personComp, personAlt);
+		
+		colision(filab[n].enemyX, filab[n].enemyY, 1, 1, personX, persony, personComp, personAlt);
+
 	}
     
 	
@@ -251,18 +258,10 @@ void phase2(){
 	    	glVertex2f(filab[n].enemyX + 1, filab[n].enemyY - 1);
 	    	glVertex2f(filab[n].enemyX, filab[n].enemyY - 1);		
 		glEnd();
-		    	
-		if(filac[n].enemyY + 1 < persony){col = 0;}
-		else if(filac[n].enemyY > persony + personAlt){col = 0;}
-		else if(filac[n].enemyX + 1 < personX){col = 0;}
-		else if(filac[n].enemyX > personX + personComp){col = 0;}
-		else{personX = 8; persony = -9;}
 		
-		if(filab[n].enemyY + 1 < persony){col = 0;}
-		else if(filab[n].enemyY > persony + personAlt){col = 0;}
-		else if(filab[n].enemyX + 1 < personX){col = 0;}
-		else if(filab[n].enemyX > personX + personComp){col = 0;}
-		else{personX = 8; persony = -9;}
+		colision(filac[n].enemyX, filac[n].enemyY, 1, 1, personX, persony, personComp, personAlt);
+		
+		colision(filab[n].enemyX, filab[n].enemyY, 1, 1, personX, persony, personComp, personAlt);
 	}
 }
 
@@ -332,8 +331,8 @@ void idle(void){
 		                if(filac[n].enemyX >= 9){
 		                    controllerState();    
 		                }else{
-		                		filac[n].enemyX += 0.22;
-			                	filab[n].enemyX -= 0.22;
+		                		filac[n].enemyX += 0.15;
+			                	filab[n].enemyX -= 0.15;
 		                }
 					}
 				}
@@ -357,8 +356,8 @@ void idle(void){
 		                if(filac[n].enemyX <= -10){
 		                    controllerState();    
 		                }else{
-		                    	filac[n].enemyX -= 0.22;
-		                    	filab[n].enemyX += 0.22;
+		                    	filac[n].enemyX -= 0.15;
+		                    	filab[n].enemyX += 0.15;
 		                }
 					}
 				}
