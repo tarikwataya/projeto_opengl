@@ -24,11 +24,9 @@ FilaC filac[6];
 FilaB filab[6];
 
 void colision(float Ax, float Ay, float Acom, float Aalt, float Bx, float By, float Bcom, float Balt){
-	if(Ay + Aalt < By){col = 0;}
-	else if(Ay > By + Balt){col = 0;}
-	else if(Ax + Acom < Bx){col = 0;}
-	else if(Ax > Bx + Bcom){col = 0;}
-	else{
+	if(Ay+Aalt < By || Ay > By+Balt || Ax+Acom < Bx || Ax > Bx+Bcom){
+		col = 0;
+	}else{
 		if(phase == 1){
 			personX = -0.5; persony = -9.5;
 		}else{
