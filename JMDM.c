@@ -24,10 +24,10 @@ FilaC filac[6];
 FilaB filab[6];
 
 void colision(float Ax, float Ay, float Acom, float Aalt, float Bx, float By, float Bcom, float Balt){
-	if(Ay+Aalt < By || Ay > By+Balt || Ax+Acom < Bx || Ax > Bx+Bcom){
+	if(Ay < By || Ay > By+Balt || Ax+Acom < Bx || Ax > Bx+Bcom){
 		col = 0;
 	}else{
-		if(phase == 1){
+		if(phase == 1){		
 			personX = -0.5; persony = -9.5;
 		}else{
 			personX = 8; persony = -9;
@@ -197,8 +197,6 @@ void phase1(){
 		colision(filab[n].enemyX, filab[n].enemyY, 1, 1, personX, persony, personComp, personAlt);
 
 	}
-    
-	
 }
 
 void phase2(){
